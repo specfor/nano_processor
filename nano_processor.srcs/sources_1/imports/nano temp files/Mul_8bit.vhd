@@ -4,7 +4,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity Mul_8bit is
     Port (
         A, B : in  STD_LOGIC_VECTOR(7 downto 0);
-        P    : out STD_LOGIC_VECTOR(15 downto 0)
+        P    : out STD_LOGIC_VECTOR(7 downto 0)
     );
 end Mul_8bit;
 

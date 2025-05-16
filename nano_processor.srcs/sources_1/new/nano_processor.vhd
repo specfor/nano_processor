@@ -77,7 +77,7 @@ Port (A0 : in STD_LOGIC_VECTOR (2 downto 0);
 
 component ROM_16bit
     Port ( 
-        address : in  STD_LOGIC_VECTOR(3 downto 0);  -- 4-bit address (0-15)
+        address : in  STD_LOGIC_VECTOR(2 downto 0);  -- 4-bit address (0-15)
         data : out STD_LOGIC_VECTOR(15 downto 0)     -- 16-bit instruction
     );
 end component ;
@@ -100,10 +100,18 @@ Port (
     immed_val : out STD_LOGIC_VECTOR (7 downto 0);
     au_reg1_sel : out STD_LOGIC_VECTOR (2 downto 0);
     au_reg2_sel : out STD_LOGIC_VECTOR (2 downto 0);
-    au_action_sel : out STD_LOGIC_VECTOR (2 downto 0);
+    au_action_sel : out STD_LOGIC_VECTOR (1 downto 0);
     flags : in STD_LOGIC_VECTOR (2 downto 0);
     jmp_en : out STD_LOGIC;
     jmp_addr : out STD_LOGIC_VECTOR (2 downto 0));
+end component ;
+
+component RCA_3bit
+ Port ( A    : in  STD_LOGIC_VECTOR (2 downto 0);
+      B    : in  STD_LOGIC_VECTOR (2 downto 0);
+      C_in : in STD_LOGIC;
+      S    : out STD_LOGIC_VECTOR (2 downto 0);
+      C_out : out STD_LOGIC);
 end component ;
 
 component mux_2way_8bit
@@ -112,6 +120,8 @@ Port (A0 : in STD_LOGIC_VECTOR (7 downto 0);
        Sel : in std_logic;
        data_out : out STD_LOGIC_VECTOR (7 downto 0));
 end component ;
+
+
 
 signal s_clock : std_logic;
 signal ins_bus : std_logic_vector (15 downto 0);
@@ -124,7 +134,7 @@ signal reg_bank_data : std_logic_vector (63 downto 0);
 
 signal au_action_sel : std_logic_vector (1 downto 0);
 
-signal  pc_jmp_addr : STD_LOGIC_VECTOR (2 downto 0);
+signal  pc_jmp_addr, pc_inc_by1_addr : STD_LOGIC_VECTOR (2 downto 0);
 signal enable_jmp : std_logic;
 
 
@@ -146,15 +156,25 @@ port map(
 
 program_counter_sel_mux : mux_2way_3bit
 port map(
-    a0 => au_out,
-    a1 => imm_value,
-    sel => load_sel,
-    data_out => reg_inp_data
+    a0 => pc_jmp_addr,
+    a1 => pc_inc_by1_addr,
+    sel => '1',                             -- set this to use jump flag
+    data_out => prog_counter
 );
+
+pc_incrementor : RCA_3bit
+port map(
+ a => prog_counter,
+ b => "001",
+ c_in => '0',
+ s => pc_inc_by1_addr,
+ c_out => open
+);
+
 
 ins_decoder : Instrcution_Decoder
 port map (
-    clk => clk,
+    clk => s_clock,
     ins_bus => ins_bus,
     load_sel => load_sel,
     reg_en => reg_sel,
@@ -191,7 +211,7 @@ port map(
     a4 => reg_bank_data(39 downto 32),
     a5 => reg_bank_data(47 downto 40),
     a6 => reg_bank_data(55 downto 48),
-    a7 => reg_bank_data(63 downto 49),
+    a7 => reg_bank_data(63 downto 56),
     sel => au_reg_1_sel,
     mux_8_way_8_bit_out => au_inp1
 );
@@ -205,7 +225,7 @@ port map(
     a4 => reg_bank_data(39 downto 32),
     a5 => reg_bank_data(47 downto 40),
     a6 => reg_bank_data(55 downto 48),
-    a7 => reg_bank_data(63 downto 49),
+    a7 => reg_bank_data(63 downto 56),
     sel => au_reg_2_sel,
     mux_8_way_8_bit_out => au_inp2
 );

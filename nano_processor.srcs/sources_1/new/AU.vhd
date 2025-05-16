@@ -49,12 +49,12 @@ Port ( A : in STD_LOGIC_VECTOR (7 downto 0);
        S : out STD_LOGIC_VECTOR (7 downto 0));
 end component ;
 
-component  Mul_8bit is
-Port (
-    A, B : in  STD_LOGIC_VECTOR(7 downto 0);
-    P    : out STD_LOGIC_VECTOR(15 downto 0)
-);
-End component ;
+--component  Mul_8bit is
+--Port (
+--    A, B : in  STD_LOGIC_VECTOR(7 downto 0);
+--    P    : out STD_LOGIC_VECTOR(7 downto 0)
+--);
+--End component ;
 
 signal res_cla, res_mul : std_logic_vector(7 downto 0);
 signal carry_cla : std_logic ;
@@ -70,12 +70,12 @@ port map(
     S => res_cla
 );
 
-Multiplier : Mul_8bit
-port map(
-    A => data_a,
-    B => data_b,
-    p => res_mul
-);
+--Multiplier : Mul_8bit
+--port map(
+--    A => data_a,
+--    B => data_b,
+--    p => res_mul
+--);
 
 -- actions 
 -- '00' -> addition
@@ -87,8 +87,8 @@ port map(
 process begin
     if (action = "00") then
         result <= res_cla;
-    elsif (action = "10") then
-        result <= res_mul;
+--    elsif (action = "10") then
+--        result <= res_mul;
     end if;
 end process;
 
