@@ -50,7 +50,7 @@ architecture Behavioral of RCA_3bit is
         C_out: out std_logic);
     end component;
     
-    SIGNAL FA0_S, FA0_C, FA1_S, FA1_C, FA2_S, FA2_C, FA3_S, FA3_C  : std_logic;
+    SIGNAL FA0_C, FA1_C : std_logic;
 
 begin
 
@@ -58,7 +58,7 @@ begin
         port map (
             A => A(0),
             B => B(0),
-            C_in => C_in, -- Set to ground
+            C_in => '0', -- Set to ground
             S => S(0),
             C_Out => FA0_C);
     FA_1 : FA

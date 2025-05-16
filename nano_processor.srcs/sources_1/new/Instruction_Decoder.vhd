@@ -87,10 +87,20 @@ begin
         au_reg1_sel <= ins_bus(10 downto 8);
         au_reg2_sel <= ins_bus(2 downto 0);
         
-    elsif (ins_bus(15 downto 12) = "0010") then  
+     elsif (ins_bus(15 downto 12) = "0010") then  
+           au_action_sel <= "10";
+           au_reg1_sel <= ins_bus(10 downto 8);
+           au_reg2_sel <= ins_bus(2 downto 0);
+           
+    elsif (ins_bus(15 downto 12) = "0011") then  
         au_action_sel <= "10";
         au_reg1_sel <= ins_bus(10 downto 8);
         au_reg2_sel <= ins_bus(2 downto 0);
+        
+    elsif (ins_bus(15 downto 12) = "0100") then  
+        reg_en <= ins_bus(11 downto 9);
+        immed_val <= ins_bus(7 downto 0);
+        
         
     end if;
     

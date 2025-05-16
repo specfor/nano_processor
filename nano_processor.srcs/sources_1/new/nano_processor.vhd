@@ -34,9 +34,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity nano_processor is
     Port ( clk : in STD_LOGIC;
            reset : in STD_LOGIC;
-           flags : out STD_LOGIC_VECTOR (3 downto 0);
+           flags : out STD_LOGIC_VECTOR (2 downto 0);
            reg7_out : out STD_LOGIC_VECTOR (7 downto 0);
-           s_clk_led : out STD_LOGIC);
+           s_clk_led : out STD_LOGIC;
+           bus_data : out STD_LOGIC_VECTOR (63 downto 0)
+   );
 end nano_processor;
 
 architecture Behavioral of nano_processor is
@@ -239,5 +241,17 @@ port map(
     flags => flags_au
 );
 
+
+process (reg_bank_data, reset)
+begin
+    reg7_out <= reg_bank_data(63 downto 56);
+    s_clk_led <= s_clock;
+    flags <= flags_au;
+    bus_data <= reg_bank_data;
+    
+    if (reset = '1') then
+        prog_counter <= "000";
+    end if;
+end process;
 
 end Behavioral;
