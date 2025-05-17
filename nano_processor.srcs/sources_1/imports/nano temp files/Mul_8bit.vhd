@@ -1,10 +1,13 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 entity Mul_8bit is
     Port (
         A, B : in  STD_LOGIC_VECTOR(7 downto 0);
-        P    : out STD_LOGIC_VECTOR(7 downto 0)
+        P    : out STD_LOGIC_VECTOR(7 downto 0);  -- Now only 8 bits output
+        Overflow : out STD_LOGIC;  -- High when result > 255
+        Zero     : out STD_LOGIC   -- High when result = 0
     );
 end Mul_8bit;
 
@@ -33,6 +36,7 @@ architecture Structural of Mul_8bit is
     signal partial_products : SumArray := (others => (others => '0'));
     signal sum_stage       : SumArray := (others => (others => '0'));
     signal carry_stage     : CarryArray := (others => (others => '0'));
+    signal full_product    : STD_LOGIC_VECTOR(15 downto 0);
     
 begin
     -- Generate partial products (AND gates)
@@ -68,6 +72,15 @@ begin
         end generate;
     end generate;
     
-    -- Final Product Output
-    P <= sum_stage(7);
+    -- Full 16-bit product (internal signal)
+    full_product <= sum_stage(7);
+    
+    -- Output the lower 8 bits
+    P <= full_product(7 downto 0);
+    
+    -- Overflow detection (if any upper 8 bits are '1')
+    Overflow <= '1' when full_product(15 downto 8) /= "00000000" else '0';
+    
+    -- Zero flag detection
+    Zero <= '1' when full_product(7 downto 0) = "00000000" else '0';
 end Structural;

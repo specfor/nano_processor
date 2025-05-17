@@ -71,7 +71,7 @@ begin
     
     RegA : Reg8
     port map (
-        D => data_in,
+        D => "00000000",
         En => reg_sel_sig(0),
         Clk => clk,
         Reset => reset       

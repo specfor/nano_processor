@@ -93,7 +93,7 @@ Port ( clk : in STD_LOGIC;
    );
 end component ;
 
-component Instrcution_Decoder
+component Instruction_Decoder
 Port (
     clk : in STD_LOGIC;
     ins_bus : in STD_LOGIC_VECTOR (15 downto 0);
@@ -136,7 +136,7 @@ signal reg_bank_data : std_logic_vector (63 downto 0);
 
 signal au_action_sel : std_logic_vector (1 downto 0);
 
-signal  pc_jmp_addr, pc_inc_by1_addr : STD_LOGIC_VECTOR (2 downto 0);
+signal pc_jmp_addr, pc_inc_by1_addr : STD_LOGIC_VECTOR (2 downto 0);
 signal enable_jmp : std_logic;
 
 
@@ -174,7 +174,7 @@ port map(
 );
 
 
-ins_decoder : Instrcution_Decoder
+ins_decoder : Instruction_Decoder
 port map (
     clk => s_clock,
     ins_bus => ins_bus,

@@ -46,7 +46,8 @@ component nano_processor
           bus_data : out STD_LOGIC_VECTOR (63 downto 0));
 end component ;
 
-signal clk, reset, s_clk_led : std_logic := '0';
+signal clk, reset : std_logic := '0';
+signal s_clk_led : std_logic;
 signal flags : std_logic_vector (2 downto 0);
 signal reg7 :  std_logic_vector (7 downto 0);
 signal bus_d :  std_logic_vector (63 downto 0);
@@ -67,7 +68,7 @@ port map (
 process
 begin
     clk <= not clk;
-    wait for 5ms;
+    wait for 10ns;
 end process;
 
 

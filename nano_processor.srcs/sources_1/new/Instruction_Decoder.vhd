@@ -75,7 +75,7 @@ begin
     au_action_sel <= "00";
     jmp_en <= '0';
     jmp_addr <= "000";
-    
+    load_sel <= '0';
     
     if (ins_bus(15 downto 12) = "0000") then
         au_action_sel <= "00";
@@ -88,9 +88,9 @@ begin
         au_reg2_sel <= ins_bus(2 downto 0);
         
      elsif (ins_bus(15 downto 12) = "0010") then  
-           au_action_sel <= "10";
-           au_reg1_sel <= ins_bus(10 downto 8);
-           au_reg2_sel <= ins_bus(2 downto 0);
+       au_action_sel <= "10";
+       au_reg1_sel <= ins_bus(10 downto 8);
+       au_reg2_sel <= ins_bus(2 downto 0);
            
     elsif (ins_bus(15 downto 12) = "0011") then  
         au_action_sel <= "10";
@@ -100,7 +100,10 @@ begin
     elsif (ins_bus(15 downto 12) = "0100") then  
         reg_en <= ins_bus(11 downto 9);
         immed_val <= ins_bus(7 downto 0);
+        load_sel <= '1';
         
+    elsif (ins_bus(15 downto 12) = "1011") then
+        jmp_en <= '1';
         
     end if;
     
