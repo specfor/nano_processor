@@ -41,12 +41,12 @@ SIGNAL count : integer :=1;
 SIGNAL Clk_status : STD_LOGIC :='0';
 
 begin
+Clk_out <= Clk_status ;
 process (Clk_in) begin
     if (rising_edge(Clk_in)) then
         count <= count +1 ;
         if (count = 5) then
             Clk_status <= NOT (Clk_status);
-            Clk_out <= Clk_status ;
             count <= 1;
         end if;
     end if;

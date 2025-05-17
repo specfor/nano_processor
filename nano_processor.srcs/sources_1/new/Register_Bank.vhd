@@ -74,7 +74,8 @@ begin
         D => "00000000",
         En => reg_sel_sig(0),
         Clk => clk,
-        Reset => reset       
+        Reset => reset,  
+        q => data_out(7 downto 0)    
     );
 
     RegB : Reg8
@@ -82,7 +83,8 @@ begin
         D => data_in,
         En => reg_sel_sig(1),
         Clk => clk,
-        Reset => reset       
+        Reset => reset,  
+        q => data_out(15 downto 8)          
     );
 
     RegC : Reg8
@@ -90,7 +92,8 @@ begin
         D => data_in,
         En => reg_sel_sig(2),
         Clk => clk,
-        Reset => reset       
+        Reset => reset,  
+        q => data_out(23 downto 16)          
     );
     
     RegD : Reg8
@@ -98,7 +101,8 @@ begin
         D => data_in,
         En => reg_sel_sig(3),
         Clk => clk,
-        Reset => reset       
+        Reset => reset,  
+        q => data_out(31 downto 24)          
     );
 
     RegE : Reg8
@@ -106,7 +110,8 @@ begin
         D => data_in,
         En => reg_sel_sig(4),
         Clk => clk,
-        Reset => reset       
+        Reset => reset,  
+        q => data_out(39 downto 32)        
     );
     
     RegF : Reg8
@@ -114,7 +119,8 @@ begin
         D => data_in,
         En => reg_sel_sig(5),
         Clk => clk,
-        Reset => reset       
+        Reset => reset,  
+        q => data_out(47 downto 40)          
     );
     
     RegG : Reg8
@@ -122,7 +128,8 @@ begin
         D => data_in,
         En => reg_sel_sig(6),
         Clk => clk,
-        Reset => reset       
+        Reset => reset,  
+        q => data_out(55 downto 48)          
     );
     
     RegH : Reg8
@@ -130,6 +137,7 @@ begin
         D => data_in,
         En => reg_sel_sig(7),
         Clk => clk,
-        Reset => reset       
+        Reset => reset,  
+        q => data_out(63 downto 56)          
     );
 end Behavioral;

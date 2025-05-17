@@ -125,9 +125,9 @@ end component ;
 
 
 
-signal s_clock : std_logic;
+signal s_clock : std_logic := '0';
 signal ins_bus : std_logic_vector (15 downto 0);
-signal prog_counter : std_logic_vector (2 downto 0);
+signal prog_counter : std_logic_vector (2 downto 0) := "000";
 
 signal au_out, imm_value, reg_inp_data, au_inp1, au_inp2 : std_logic_vector (7 downto 0);
 signal load_sel : std_logic;
@@ -241,14 +241,13 @@ port map(
     flags => flags_au
 );
 
+reg7_out <= reg_bank_data(63 downto 56);
+s_clk_led <= s_clock;
+flags <= flags_au;
+bus_data <= reg_bank_data;
 
 process (reg_bank_data, reset)
-begin
-    reg7_out <= reg_bank_data(63 downto 56);
-    s_clk_led <= s_clock;
-    flags <= flags_au;
-    bus_data <= reg_bank_data;
-    
+begin    
     if (reset = '1') then
         prog_counter <= "000";
     end if;

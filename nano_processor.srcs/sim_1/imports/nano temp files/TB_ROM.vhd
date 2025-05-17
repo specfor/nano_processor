@@ -37,11 +37,11 @@ end TB_ROM;
 
 architecture Behavioral of TB_ROM is
 COMPONENT ROM_16bit
-    Port ( address : in STD_LOGIC_VECTOR (3 downto 0);
+    Port ( address : in STD_LOGIC_VECTOR (2 downto 0);
            data    : out STD_LOGIC_VECTOR (15 downto 0));
 end component;
 
-signal address : STD_LOGIC_VECTOR (3 downto 0);
+signal address : STD_LOGIC_VECTOR (2 downto 0);
 signal data    : STD_LOGIC_VECTOR (15 downto 0);
 
 begin
@@ -52,34 +52,21 @@ port map (address => address,
 
 process
 begin
-    address <= "0000";
+    address <= "000";
     wait for 100 ns;
-    address <= "0001";
+    address <= "001";
     wait for 100 ns;
-    address <= "0010";
+    address <= "010";
     wait for 100 ns;
-    address <= "0011";
+    address <= "011";
     wait for 100 ns;
-    address <= "0100";
+    address <= "100";
     wait for 100 ns;
-    address <= "0101";
+    address <= "101";
     wait for 100 ns;
-    address <= "0110";
+    address <= "110";
     wait for 100 ns;
-    address <= "0111";
-    wait for 100 ns;
-    address <= "1000";
-    wait for 100 ns;
-    address <= "1001";
-    wait for 100 ns;
-    address <= "1010";
-    wait for 100 ns;
-    address <= "1011";
-    wait for 100 ns;
-    address <= "1100";
-    wait for 100 ns;
-    address <= "1111";
-    wait for 100 ns;
+    address <= "111";
     wait;
 end process;
 

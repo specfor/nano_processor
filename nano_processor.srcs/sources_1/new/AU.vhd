@@ -41,39 +41,44 @@ end AU;
 
 architecture Behavioral of AU is
 
-component CLA_8_BIT is
-Port ( A : in STD_LOGIC_VECTOR (7 downto 0);
-       B : in STD_LOGIC_VECTOR (7 downto 0);
-       C_IN : in STD_LOGIC;
-       C_OUT : out STD_LOGIC;
-       S : out STD_LOGIC_VECTOR (7 downto 0));
+component Adder_Subtractor
+    Port ( A      : in  STD_LOGIC_VECTOR(7 downto 0);
+           B      : in  STD_LOGIC_VECTOR(7 downto 0);
+           M      : in  STD_LOGIC;  -- 0=add, 1=subtract
+           S      : out STD_LOGIC_VECTOR(7 downto 0);
+           C_out  : out STD_LOGIC;
+           ZeroFlag : out STD_LOGIC;
+           Overflow : out STD_LOGIC);
 end component ;
 
-component Mul_8bit
+component Mul_8bit_optimized
     Port (
-        A, B : in  STD_LOGIC_VECTOR(7 downto 0);
-        P    : out STD_LOGIC_VECTOR(7 downto 0);  -- Now only 8 bits output
-        Overflow : out STD_LOGIC;  -- High when result > 255
-        Zero     : out STD_LOGIC   -- High when result = 0
+        A, B     : in  STD_LOGIC_VECTOR(7 downto 0);
+        P        : out STD_LOGIC_VECTOR(7 downto 0);
+        Overflow : out STD_LOGIC;
+        Zero     : out STD_LOGIC
     );
 End component ;
 
 signal res_cla, res_mul : std_logic_vector(7 downto 0);
 signal carry_cla : std_logic ;
-signal ov_flow_mul, ov_flow_cla, zero_mul, zero_cla : std_logic ;
+signal ov_flow_mul, ov_flow_add, zero_mul, zero_add : std_logic ;
+signal sub_enable : std_logic;
 
 begin
 
-CLA : CLA_8_BIT
+adder_sub : Adder_Subtractor
 port map(
     A => data_a,
     B => data_b,
-    C_in => '0',
+    M => sub_enable,
     C_out => carry_cla,
-    S => res_cla
+    S => res_cla,
+    ZeroFlag => zero_add,
+    Overflow => ov_flow_add    
 );
 
-Multiplier : Mul_8bit
+Multiplier : Mul_8bit_optimized
 port map(
     A => data_a,
     B => data_b,
@@ -94,10 +99,12 @@ port map(
 process(action) begin
     if (action = "00") then
         result <= res_cla;
-        flags <= '0' & ov_flow_cla & zero_cla;
+        sub_enable <= '0';
+        flags <= '0' & ov_flow_add & zero_add;
     elsif (action = "10") then
-        result <= "00000000";
-        flags <= "000";
+        result <= res_cla;
+        sub_enable <= '1';
+        flags <= '0' & ov_flow_add & zero_add;
     elsif (action = "10") then
         result <= res_mul;
         flags <= '0' & ov_flow_mul & zero_mul;
