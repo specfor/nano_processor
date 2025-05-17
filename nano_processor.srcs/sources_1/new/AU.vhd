@@ -41,54 +41,79 @@ end AU;
 
 architecture Behavioral of AU is
 
-component CLA_8_BIT is
-Port ( A : in STD_LOGIC_VECTOR (7 downto 0);
-       B : in STD_LOGIC_VECTOR (7 downto 0);
-       C_IN : in STD_LOGIC;
-       C_OUT : out STD_LOGIC;
-       S : out STD_LOGIC_VECTOR (7 downto 0));
+component Adder_Subtractor
+    Port ( A      : in  STD_LOGIC_VECTOR(7 downto 0);
+           B      : in  STD_LOGIC_VECTOR(7 downto 0);
+           M      : in  STD_LOGIC;  -- 0=add, 1=subtract
+           S      : out STD_LOGIC_VECTOR(7 downto 0);
+           C_out  : out STD_LOGIC;
+           ZeroFlag : out STD_LOGIC;
+           Overflow : out STD_LOGIC);
 end component ;
 
-component  Mul_8bit is
-Port (
-    A, B : in  STD_LOGIC_VECTOR(7 downto 0);
-    P    : out STD_LOGIC_VECTOR(15 downto 0)
-);
+component Mul_8bit_optimized
+    Port (
+        A, B     : in  STD_LOGIC_VECTOR(7 downto 0);
+        P        : out STD_LOGIC_VECTOR(7 downto 0);
+        Overflow : out STD_LOGIC;
+        Zero     : out STD_LOGIC
+    );
 End component ;
 
-signal res_cla, res_mul : std_logic_vector(7 downto 0);
-signal carry_cla : std_logic ;
+signal res_add, res_mul : std_logic_vector(7 downto 0);
+signal carry_add : std_logic ;
+signal ov_flow_mul, ov_flow_add, zero_mul, zero_add : std_logic ;
+signal sub_enable : std_logic;
 
 begin
 
-CLA : CLA_8_BIT
+adder_sub : Adder_Subtractor
 port map(
     A => data_a,
     B => data_b,
-    C_in => '0',
-    C_out => carry_cla,
-    S => res_cla
+    M => sub_enable,
+    C_out => carry_add,
+    S => res_add,
+    ZeroFlag => zero_add,
+    Overflow => ov_flow_add    
 );
 
-Multiplier : Mul_8bit
+Multiplier : Mul_8bit_optimized
 port map(
     A => data_a,
     B => data_b,
-    p => res_mul
+    p => res_mul,
+    Overflow => ov_flow_mul,
+    Zero => zero_mul
 );
 
 -- actions 
 -- '00' -> addition
--- '01' -> subtraction - need to implement
+-- '01' -> subtraction
 -- '10' -> multiplication
 -- '11' -> division - not yet implemented
 
 
-process begin
+-- flags order     -    carry, overflow, zero
+
+
+sub_enable <= '0' when action = "00" else
+              '1' when action = "01" else
+              '0';
+              
+process(action) begin
     if (action = "00") then
-        result <= res_cla;
+        result <= res_add;
+        flags <= '0' & ov_flow_add & zero_add;
+    elsif (action = "10") then
+        result <= res_add;
+        flags <= '0' & ov_flow_add & zero_add;
     elsif (action = "10") then
         result <= res_mul;
+        flags <= '0' & ov_flow_mul & zero_mul;
+    elsif (action = "11") then
+        result <= "00000000";
+        flags <= "000";
     end if;
 end process;
 

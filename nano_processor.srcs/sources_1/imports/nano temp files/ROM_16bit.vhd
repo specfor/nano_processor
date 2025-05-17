@@ -25,13 +25,13 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity ROM_16bit is
     Port ( 
-        address : in  STD_LOGIC_VECTOR(3 downto 0);  -- 4-bit address (0-15)
+        address : in  STD_LOGIC_VECTOR(2 downto 0);  -- 4-bit address (0-15)
         data : out STD_LOGIC_VECTOR(15 downto 0)     -- 16-bit instruction
     );
 end ROM_16bit;
 
 architecture Behavioral of ROM_16bit is
-    type ROM_Array is array (0 to 15) of STD_LOGIC_VECTOR(15 downto 0);
+    type ROM_Array is array (0 to 7) of STD_LOGIC_VECTOR(15 downto 0);
     
     -- 16-bit instruction format:
     -- [15:12] - Opcode (4 bits for 16 possible operations)
@@ -59,22 +59,14 @@ architecture Behavioral of ROM_16bit is
     
     signal ROM_Data : ROM_Array := (
         -- Sample program: Calculate sum of numbers from 1 to 5 (1+2+3+4+5 = 15)
-        "0100000100000001",  --  0 MOVI R1, 1   
-        "0100001000000101",  --  1 MOVI R2, 5   
-        "0100001100000000",  --  2 MOVI R3, 0   
-        "0000001100000001",  --  3 ADD R3, R1   
-        "0001000100000001",  --  4 ADD R1, 1   
+        "0100001000000001",  --  0 MOVI R1, 1   
+        "0100010000000101",  --  1 MOVI R2, 5   
+        "0100011000000000",  --  2 MOVI R3, 0   
+        "0000001100000001",  --  3 ADD R3, R1    
         "0111000100000010",  --  5 JNZ R1<=R2, 3 
         "0100010000000000",  --  6 MOVI R4, 0   
-        "0001010000000011",  --  7 ADD R4, R3  
-        "0000000000000000",  --  8 NOP
-        "0000000000000000",  --  9 NOP
-        "0000000000000000",  --  10 NOP
-        "0000000000000000",  --  11 NOP
-        "0000000000000000",  --  12 NOP
-        "0000000000000000",  --  13 NOP
-        "0000000000000000",  --  14 NOP
-        "0000000000000000"  --  15 NOP
+        "0001010000000011",  --  7 ADD R4, R3
+        "0000000000000000"
     );
     
 begin

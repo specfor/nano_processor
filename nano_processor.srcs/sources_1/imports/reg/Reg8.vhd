@@ -14,15 +14,19 @@ end Reg8;
 
 architecture Behavioral of Reg8 is
 
+signal data : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
+
 begin
+
+Q <= data;
 
 process (Clk, Reset)
     begin
         if (Reset = '1') then
-            Q <= (others => '0');
+            data <= (others => '0');
         elsif rising_edge(Clk) then
             if En = '1' then
-                Q <= D;
+                data <= D;
             end if;
         end if;
     end process;

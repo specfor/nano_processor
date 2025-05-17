@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 04/10/2025 06:52:42 PM
+-- Create Date: 17.05.2025 01:06:58
 -- Design Name: 
--- Module Name: Slow_Clk - Behavioral
+-- Module Name: TB_mux_2way_8bit - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -31,25 +31,42 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity Slow_Clk is
-    Port ( Clk_in : in STD_LOGIC;
-           Clk_out : out STD_LOGIC);
-end Slow_Clk;
+entity TB_mux_2way_8bit is
+--  Port ( );
+end TB_mux_2way_8bit;
 
-architecture Behavioral of Slow_Clk is
-SIGNAL count : integer :=1;
-SIGNAL Clk_status : STD_LOGIC :='0';
+architecture Behavioral of TB_mux_2way_8bit is
+COMPONENT mux_2way_8bit
+    Port ( A0 : in STD_LOGIC_VECTOR (7 downto 0);
+       A1 : in STD_LOGIC_VECTOR (7 downto 0);
+       data_out : out STD_LOGIC_VECTOR (7 downto 0);
+       Sel : in STD_LOGIC);
+END COMPONENT;
+
+SIGNAL A0, A1, data_out : STD_LOGIC_VECTOR (7 downto 0);
+SIGNAL Sel : STD_LOGIC;
 
 begin
-Clk_out <= Clk_status ;
-process (Clk_in) begin
-    if (rising_edge(Clk_in)) then
-        count <= count +1 ;
-        if (count = 5) then
-            Clk_status <= NOT (Clk_status);
-            count <= 1;
-        end if;
-    end if;
-end process;
+UUT : mux_2way_8bit
+PORT MAP(A0 => A0,
+         A1 => A1,
+         Sel => Sel,
+         data_out => data_out);
+         
+PROCESS
+BEGIN
+
+A0 <= "00110101";
+A1 <= "11010001";
+
+Sel <= '0';
+
+WAIT FOR 100NS;
+Sel <= '1';
+
+WAIT;
+END PROCESS;
+
+
 
 end Behavioral;

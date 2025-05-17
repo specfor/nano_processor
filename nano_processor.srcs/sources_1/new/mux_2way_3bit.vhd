@@ -41,13 +41,8 @@ end mux_2way_3bit;
 architecture Behavioral of mux_2way_3bit is
 
 begin
-
-process begin
-    if (sel = '0') then
-        data_out <= A0;
-    else
-        data_out <= A1;
-    end if;
-end process;
+data_out <= A0 WHEN Sel = '0' ELSE
+            A1 WHEN sel = '1' else
+                        (others => 'U');
 
 end Behavioral;
