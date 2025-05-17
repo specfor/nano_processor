@@ -57,15 +57,30 @@ PORT MAP(A0 => A0,
 
 PROCESS
 BEGIN
-A0 <= "011";
-A1 <= "100";
+--INDEXES IN BINARY
+--230247 = 111 000 001 101 100 111
+--230346 = 111 000 001 111 001 010
+--230600 = 111 000 010 011 001 000
+--230602 = 111 000 010 011 001 010
+
+
+A0 <= "111";
+A1 <= "000";
 
 Sel <= '0';
-
 WAIT FOR 100NS;
 Sel <= '1';
-WAIT;
 
+
+WAIT FOR 100NS;
+A0 <= "001";
+A1 <= "010";
+
+Sel <= '0';
+WAIT FOR 100NS;
+Sel <= '1';
+
+WAIT;
 END PROCESS;
 
 end Behavioral;
