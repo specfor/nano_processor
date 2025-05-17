@@ -101,19 +101,20 @@ sub_enable <= '0' when action = "00" else
               '1' when action = "01" else
               '0';
               
-process(action) begin
-    if (action = "00") then
-        result <= res_add;
-        flags <= '0' & ov_flow_add & zero_add;
-    elsif (action = "10") then
-        result <= res_add;
-        flags <= '0' & ov_flow_add & zero_add;
-    elsif (action = "10") then
-        result <= res_mul;
-        flags <= '0' & ov_flow_mul & zero_mul;
-    elsif (action = "11") then
-        result <= "00000000";
-        flags <= "000";
+process(action)
+begin
+    if (action = "00") then  -- ADD
+      result <= res_add;
+      flags <= '0' & ov_flow_add & zero_add;
+    elsif (action = "01") then  -- SUB
+      result <= res_add;
+      flags <= '0' & ov_flow_add & zero_add;
+    elsif (action = "10") then  -- MUL
+      result <= res_mul;
+      flags <= '0' & ov_flow_mul & zero_mul;
+    elsif (action = "11") then  -- DIV (not implemented)
+      result <= "00000000";
+      flags <= "000";
     end if;
 end process;
 

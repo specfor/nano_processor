@@ -43,12 +43,15 @@ component nano_processor
           flags : out STD_LOGIC_VECTOR (2 downto 0);
           reg7_out : out STD_LOGIC_VECTOR (7 downto 0);
           s_clk_led : out STD_LOGIC;
-          bus_data : out STD_LOGIC_VECTOR (63 downto 0));
+         bus_data : out STD_LOGIC_VECTOR (63 downto 0);
+         pg_counter: out STD_LOGIC_VECTOR (2 downto 0);
+         reg_select:  out STD_LOGIC_VECTOR (2 downto 0));
 end component ;
 
-signal clk, reset : std_logic := '0';
+signal clk : std_logic := '1';
+signal reset : std_logic := '0';
 signal s_clk_led : std_logic;
-signal flags : std_logic_vector (2 downto 0);
+signal flags, pg_counter, reg_select : std_logic_vector (2 downto 0);
 signal reg7 :  std_logic_vector (7 downto 0);
 signal bus_d :  std_logic_vector (63 downto 0);
 
@@ -61,7 +64,9 @@ port map (
     reset => reset,
     reg7_out => reg7,
     s_clk_led => s_clk_led,
-    bus_data => bus_d
+    bus_data => bus_d,
+    pg_counter => pg_counter,
+    reg_select => reg_select
 );
 
 

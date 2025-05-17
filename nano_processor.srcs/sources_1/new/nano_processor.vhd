@@ -37,7 +37,9 @@ entity nano_processor is
            flags : out STD_LOGIC_VECTOR (2 downto 0);
            reg7_out : out STD_LOGIC_VECTOR (7 downto 0);
            s_clk_led : out STD_LOGIC;
-           bus_data : out STD_LOGIC_VECTOR (63 downto 0)
+           bus_data : out STD_LOGIC_VECTOR (63 downto 0);
+           pg_counter: out STD_LOGIC_VECTOR (2 downto 0);
+           reg_select:  out STD_LOGIC_VECTOR (2 downto 0)
    );
 end nano_processor;
 
@@ -123,11 +125,18 @@ Port (A0 : in STD_LOGIC_VECTOR (7 downto 0);
        data_out : out STD_LOGIC_VECTOR (7 downto 0));
 end component ;
 
+component Program_Counter
+Port ( clk : in STD_LOGIC;
+       next_addr : in STD_LOGIC_VECTOR (2 downto 0);
+       reset : in STD_LOGIC;
+       mem_select : out STD_LOGIC_VECTOR (2 downto 0));
+end component ;
+
 
 
 signal s_clock : std_logic := '0';
 signal ins_bus : std_logic_vector (15 downto 0);
-signal prog_counter : std_logic_vector (2 downto 0) := "000";
+signal prog_counter, next_prog_counter : std_logic_vector (2 downto 0);
 
 signal au_out, imm_value, reg_inp_data, au_inp1, au_inp2 : std_logic_vector (7 downto 0);
 signal load_sel : std_logic;
@@ -156,12 +165,20 @@ port map(
     data_out => reg_inp_data
 );
 
+pc : Program_Counter
+port map(
+    clk => s_clock,
+    next_addr => next_prog_counter,
+    reset => reset,
+    mem_select => prog_counter
+);
+
 program_counter_sel_mux : mux_2way_3bit
 port map(
     a0 => pc_jmp_addr,
     a1 => pc_inc_by1_addr,
     sel => '1',                             -- set this to use jump flag
-    data_out => prog_counter
+    data_out => next_prog_counter
 );
 
 pc_incrementor : RCA_3bit
@@ -244,13 +261,10 @@ port map(
 reg7_out <= reg_bank_data(63 downto 56);
 s_clk_led <= s_clock;
 flags <= flags_au;
-bus_data <= reg_bank_data;
 
-process (reg_bank_data, reset)
-begin    
-    if (reset = '1') then
-        prog_counter <= "000";
-    end if;
-end process;
+bus_data <= reg_bank_data;
+pg_counter <= prog_counter;
+reg_select <= reg_sel;
+
 
 end Behavioral;
