@@ -38,14 +38,14 @@ end TB_CLA_8;
 architecture Behavioral of TB_CLA_8 is
 
 COMPONENT CLA_8_BIT
-    Port ( A : in STD_LOGIC_VECTOR (3 downto 0);
-       B : in STD_LOGIC_VECTOR (3 downto 0);
+    Port ( A : in STD_LOGIC_VECTOR (7 downto 0);
+       B : in STD_LOGIC_VECTOR (7 downto 0);
        C_IN : in STD_LOGIC;
-       S : out STD_LOGIC_VECTOR (3 downto 0);
+       S : out STD_LOGIC_VECTOR (7 downto 0);
        C_OUT : out STD_LOGIC);
 END COMPONENT;
 
-SIGNAL A, B, S : STD_LOGIC_VECTOR(3 DOWNTO 0);
+SIGNAL A, B, S : STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL C_IN, C_OUT : STD_LOGIC;
 
 begin
@@ -59,29 +59,50 @@ PORT MAP(A => A,
 
 PROCESS
 BEGIN
--- 1 + 2 WITH C_IN =0
-A <= "00000001";
-B <= "00000010";
+--INDEXES IN BINARY
+--230247 = 11 10000011 01100111
+--230346 = 11 10000011 11001010
+--230600 = 11 10000100 11001000
+--230602 = 11 10000100 11001010
+
+
+--let C_IN = '0' and add random 8 bit numbers from above index numbers
 C_IN <= '0';
 
+A <= "10000011";
+B <= "10000100";
 
--- 2 + 3 WITH C_IN = 1
 WAIT FOR 100NS;
-A <= "00000010";
-B <= "00000011";
+A <= "10000100";
+B <= "01100111";
+
+WAIT FOR 100NS;
+A <= "01100111";
+B <= "11001010";
+
+WAIT FOR 100NS;
+A <= "11001010";
+B <= "10000100";
+
+--now let C_IN = '1' and add the same 8 bit numbers
+WAIT FOR 100NS;
 C_IN <= '1';
 
--- 0 + 1 WITH C_IN = 1
-WAIT FOR 100NS;
-A <= "00000000";
-B <= "00000001";
-C_IN <= '1';
+A <= "10000011";
+B <= "10000100";
 
--- 1 + 5 WITH C_IN = 0
 WAIT FOR 100NS;
-A <= "00000001";
-B <= "00000101";
-C_IN <= '0';
+A <= "10000100";
+B <= "01100111";
+
+WAIT FOR 100NS;
+A <= "01100111";
+B <= "11001010";
+
+WAIT FOR 100NS;
+A <= "11001010";
+B <= "10000100";
+
 
 WAIT;
 
