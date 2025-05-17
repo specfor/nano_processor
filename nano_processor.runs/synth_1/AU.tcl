@@ -30,11 +30,8 @@ set_property board_part digilentinc.com:basys3:part0:1.2 [current_project]
 set_property ip_output_repo c:/Users/User/Documents/COD/nano_p/nano_processor/nano_processor.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 read_vhdl -library xil_defaultlib {
-  {C:/Users/User/Documents/COD/nano_p/nano_processor/nano_processor.srcs/sources_1/imports/nano temp files/CLA/sources_1/new/CLA_4_bit.vhd}
-  {C:/Users/User/Documents/COD/nano_p/nano_processor/nano_processor.srcs/sources_1/imports/nano temp files/CLA/sources_1/new/CLA_8_BIT.vhd}
-  {C:/Users/User/Documents/COD/nano_p/nano_processor/nano_processor.srcs/sources_1/imports/nano temp files/FA.vhd}
-  {C:/Users/User/Documents/COD/nano_p/nano_processor/nano_processor.srcs/sources_1/imports/nano temp files/HA.vhd}
-  {C:/Users/User/Documents/COD/nano_p/nano_processor/nano_processor.srcs/sources_1/imports/nano temp files/Mul_8bit.vhd}
+  C:/Users/User/Documents/COD/nano_p/nano_processor/nano_processor.srcs/sources_1/imports/sim_1/Adder_Subtractor.vhd
+  {C:/Users/User/Documents/COD/nano_p/nano_processor/nano_processor.srcs/sources_1/Optimized multiplier/Mul_8bit.vhd}
   C:/Users/User/Documents/COD/nano_p/nano_processor/nano_processor.srcs/sources_1/new/AU.vhd
 }
 # Mark all dcp files as not used in implementation to prevent them from being
