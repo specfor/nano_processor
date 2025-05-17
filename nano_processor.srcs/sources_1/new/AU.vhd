@@ -60,8 +60,8 @@ component Mul_8bit_optimized
     );
 End component ;
 
-signal res_cla, res_mul : std_logic_vector(7 downto 0);
-signal carry_cla : std_logic ;
+signal res_add, res_mul : std_logic_vector(7 downto 0);
+signal carry_add : std_logic ;
 signal ov_flow_mul, ov_flow_add, zero_mul, zero_add : std_logic ;
 signal sub_enable : std_logic;
 
@@ -72,8 +72,8 @@ port map(
     A => data_a,
     B => data_b,
     M => sub_enable,
-    C_out => carry_cla,
-    S => res_cla,
+    C_out => carry_add,
+    S => res_add,
     ZeroFlag => zero_add,
     Overflow => ov_flow_add    
 );
@@ -89,21 +89,24 @@ port map(
 
 -- actions 
 -- '00' -> addition
--- '01' -> subtraction - need to implement
+-- '01' -> subtraction
 -- '10' -> multiplication
 -- '11' -> division - not yet implemented
 
 
 -- flags order     -    carry, overflow, zero
 
+
+sub_enable <= '0' when action = "00" else
+              '1' when action = "01" else
+              '0';
+              
 process(action) begin
     if (action = "00") then
-        result <= res_cla;
-        sub_enable <= '0';
+        result <= res_add;
         flags <= '0' & ov_flow_add & zero_add;
     elsif (action = "10") then
-        result <= res_cla;
-        sub_enable <= '1';
+        result <= res_add;
         flags <= '0' & ov_flow_add & zero_add;
     elsif (action = "10") then
         result <= res_mul;

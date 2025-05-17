@@ -1,6 +1,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL; -- For arithmetic operations
+use IEEE.NUMERIC_STD.ALL;
 
 entity Adder_Subtractor is
     Port ( A      : in  STD_LOGIC_VECTOR(7 downto 0);
@@ -12,28 +12,30 @@ entity Adder_Subtractor is
            Overflow : out STD_LOGIC);
 end Adder_Subtractor;
 
-architecture Optimized of Adder_Subtractor is
+architecture Behavioral of Adder_Subtractor is
     signal B_operand   : STD_LOGIC_VECTOR(7 downto 0);
-    signal sum         : STD_LOGIC_VECTOR(8 downto 0); -- Includes carry out
-    signal carry_chain : STD_LOGIC_VECTOR(8 downto 0);
+    signal sum         : signed(8 downto 0);
+    signal A_ext, B_ext : signed(8 downto 0);
 begin
-    -- Optimized XOR stage (1 LUT4 per bit, shared M signal)
-    B_operand <= B when M = '0' else not B;
+    -- For subtraction, we need to negate B (two's complement: invert and add 1)
+    -- This is done by: B_operand = (B xor M) + M when M=1
+    -- But implemented more clearly as:
+    B_operand <= B when M = '0' else std_logic_vector(-signed(B));
     
-    -- Carry chain implementation (4 LUTs total)
-    carry_chain(0) <= M; -- Initial carry-in is M (1 for subtraction)
+    -- Sign-extended inputs
+    A_ext <= signed(A(7) & A);
+    B_ext <= signed(B_operand(7) & B_operand);
     
-    -- Propagate carry through all bits
-    sum <= ('0' & A) + ('0' & B_operand) + carry_chain(0);
+    -- Actual addition (now works for both add and subtract)
+    sum <= A_ext + B_ext;
     
-    -- Output assignments (3 LUTs total)
-    S <= sum(7 downto 0);
-    C_out <= sum(8);
+    -- Output assignments
+    S <= std_logic_vector(sum(7 downto 0));
+    C_out <= std_logic(sum(8));
     
-    -- Zero flag optimized (1 LUT4)
-    ZeroFlag <= '1' when sum(7 downto 0) = "0000" else '0';
+    -- Zero flag
+    ZeroFlag <= '1' when sum(7 downto 0) = "00000000" else '0';
     
-    -- Overflow detection (1 LUT4)
-    Overflow <= (A(7) and B_operand(7) and not sum(7)) or 
-                (not A(7) and not B_operand(7) and sum(7));
-end Optimized;
+    -- Correct signed overflow detection
+    Overflow <= '1' when (A(7) = B_operand(7)) and (sum(7) /= A(7)) else '0';
+end Behavioral;
