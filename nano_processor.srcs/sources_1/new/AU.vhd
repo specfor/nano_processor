@@ -163,10 +163,10 @@ process(action, res_add, res_mul, res_shift, res_bitwise)
 begin
     if (action = "0000") then  -- ADD
         result <= res_add;
-        flags <= '0' & ov_flow_add & zero_add;
+        flags <= carry_add & ov_flow_add & zero_add;
     elsif (action = "0001") then  -- SUB
         result <= res_add;
-        flags <= '0' & ov_flow_add & zero_add;
+        flags <= carry_add & ov_flow_add & zero_add;
     elsif (action = "0010") then  -- MUL
         result <= res_mul;
         flags <= '0' & ov_flow_mul & zero_mul;

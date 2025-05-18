@@ -39,8 +39,8 @@ end Slow_Clk;
 
 architecture Behavioral of Slow_Clk is
 
-    signal div : unsigned(26 downto 0) := (others => '0'); -- Use unsigned and initialize
---    signal div : unsigned(2 downto 0) := (others => '0'); -- Use unsigned and initialize
+--    signal div : unsigned(26 downto 0) := (others => '0'); -- Use unsigned and initialize
+    signal div : unsigned(2 downto 0) := (others => '0'); -- Use unsigned and initialize
 
 begin
 
@@ -51,7 +51,7 @@ begin
         end if;
     end process;
 
-    Clk_out <= div(26);  -- Output the MSB for divided clock
---    Clk_out <= div(2);  -- Output the MSB for divided clock
+--    Clk_out <= div(26);  -- Output the MSB for divided clock
+    Clk_out <= div(2);  -- Output the MSB for divided clock
 
 end Behavioral;
