@@ -157,7 +157,10 @@ signal pc_jmp_addr, pc_inc_by1_addr : STD_LOGIC_VECTOR (2 downto 0);
 signal enable_jmp : std_logic;
 
 signal seg7_lut_addr : std_logic_vector (3 downto 0);
+signal seg7_digit_sel : std_logic := '0';
 
+signal seg7_count : integer range 0 to 99999 := 0;
+signal seg7_tick : std_logic := '0';
 
 begin
 
@@ -284,15 +287,36 @@ flags <= flags_au;
 --pg_counter <= prog_counter;
 --reg_select <= reg_sel;
 
+
+process(clk)
+begin
+    if rising_edge(clk) then
+        if seg7_count = 99999 then
+            seg7_count <= 0;
+            seg7_tick <= '1';
+        else
+            seg7_count <= seg7_count + 1;
+            seg7_tick <= '0';
+        end if;
+    end if;
+end process;
+
 seg7_process : process(clk)
 begin
-    seg7_anodes <= "1110";
-    seg7_lut_addr <= reg_bank_data(59 downto 56);
-    
-    seg7_anodes <= "1101";
-    seg7_lut_addr <= reg_bank_data(63 downto 60);
-    
+    if rising_edge(clk) then
+        if seg7_tick = '1' then
+            if seg7_digit_sel = '0' then
+                seg7_anodes <= "1110"; -- first digit
+                seg7_lut_addr <= reg_bank_data(59 downto 56); -- lower nibble
+            else
+                seg7_anodes <= "1101"; -- second digit
+                seg7_lut_addr <= reg_bank_data(63 downto 60); -- upper nibble
+            end if;
+            seg7_digit_sel <= not seg7_digit_sel;
+        end if;
+    end if;
 end process;
+
 
 
 end Behavioral;

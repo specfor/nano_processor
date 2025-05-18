@@ -94,13 +94,13 @@ begin
                 reg_en <= ins_bus(10 downto 8);
                                 
             when "0011" =>  -- Neg
-                au_action_sel <= "0010";
+                au_action_sel <= "0001";
                 au_reg2_sel <= ins_bus(10 downto 8);
                 au_reg1_sel <= ins_bus(2 downto 0);
                 reg_en <= ins_bus(10 downto 8);
 
             when "0100" =>  -- Mul
-                au_action_sel <= "0011";
+                au_action_sel <= "0010";
                 au_reg1_sel <= ins_bus(10 downto 8);
                 au_reg2_sel <= ins_bus(2 downto 0);
                 reg_en <= ins_bus(10 downto 8);

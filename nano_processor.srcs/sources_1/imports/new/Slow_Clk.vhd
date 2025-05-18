@@ -21,6 +21,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -32,24 +33,25 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity Slow_Clk is
-    Port ( Clk_in : in STD_LOGIC;
+    Port ( Clk_in  : in  STD_LOGIC;
            Clk_out : out STD_LOGIC);
 end Slow_Clk;
 
 architecture Behavioral of Slow_Clk is
-SIGNAL count : integer :=1;
-SIGNAL Clk_status : STD_LOGIC :='0';
+
+    signal div : unsigned(26 downto 0) := (others => '0'); -- Use unsigned and initialize
+--    signal div : unsigned(2 downto 0) := (others => '0'); -- Use unsigned and initialize
 
 begin
-Clk_out <= Clk_status ;
-process (Clk_in) begin
-    if (rising_edge(Clk_in)) then
-        count <= count +1 ;
-        if (count = 100000000) then
-            Clk_status <= NOT (Clk_status);
-            count <= 1;
+
+    process(Clk_in)
+    begin
+        if rising_edge(Clk_in) then
+            div <= div + 1;
         end if;
-    end if;
-end process;
+    end process;
+
+    Clk_out <= div(26);  -- Output the MSB for divided clock
+--    Clk_out <= div(2);  -- Output the MSB for divided clock
 
 end Behavioral;

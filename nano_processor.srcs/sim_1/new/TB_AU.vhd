@@ -67,10 +67,30 @@ process begin
     wait for 100ns;
     
     action <= "0001";
-    
     wait for 100ns;
     
     action <= "0010";
+    wait for 100ns;
+    
+    action <= "0010";
+    wait for 100ns;
+    
+    action <= "0100";
+    wait for 100ns;
+    
+    action <= "0101";
+    wait for 100ns;
+    
+    action <= "0110";
+    wait for 100ns;
+    
+    action <= "0111";
+    wait for 100ns;
+    
+    action <= "1000";
+    wait for 100ns; 
+    
+    action <= "1001";
     wait for 100ns;
     
     data_a <= "00000101";
