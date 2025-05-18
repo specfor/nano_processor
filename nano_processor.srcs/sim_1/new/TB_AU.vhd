@@ -39,14 +39,14 @@ architecture Behavioral of TB_AU is
 
 component AU
 Port ( data_a : in STD_LOGIC_VECTOR (7 downto 0);
-    data_b : in STD_LOGIC_VECTOR (7 downto 0);
-    action : in STD_LOGIC_VECTOR (1 downto 0);
-    result : out STD_LOGIC_VECTOR (7 downto 0);
-    flags : out STD_LOGIC_VECTOR (2 downto 0));
+           data_b : in STD_LOGIC_VECTOR (7 downto 0);
+           action : in STD_LOGIC_VECTOR (3 downto 0);
+           result : out STD_LOGIC_VECTOR (7 downto 0);
+           flags : out STD_LOGIC_VECTOR (2 downto 0));
 end component ;
 
 signal data_a, data_b, result : std_logic_vector (7 downto 0);
-signal action :std_logic_vector (1 downto 0);
+signal action :std_logic_vector (3 downto 0);
 signal flags : std_logic_vector (2 downto 0);
 
 begin
@@ -62,28 +62,28 @@ port map(
 process begin
     data_a <= "00000100";
     data_b <= "00000010";
-    action <= "00";
+    action <= "0000";
     
     wait for 100ns;
     
-    action <= "01";
+    action <= "0001";
     
     wait for 100ns;
     
-    action <= "10";
+    action <= "0010";
     wait for 100ns;
     
     data_a <= "00000101";
     data_b <= "00000101";
-    action <= "00";
+    action <= "0000";
     
     wait for 100ns;
     
-    action <= "01";
+    action <= "0001";
     
     wait for 100ns;
     
-    action <= "10";
+    action <= "0010";
     
     wait;
 end process;

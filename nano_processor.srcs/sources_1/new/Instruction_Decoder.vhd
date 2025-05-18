@@ -39,7 +39,7 @@ entity Instruction_Decoder is
            immed_val : out STD_LOGIC_VECTOR (7 downto 0);
            au_reg1_sel : out STD_LOGIC_VECTOR (2 downto 0);
            au_reg2_sel : out STD_LOGIC_VECTOR (2 downto 0);
-           au_action_sel : out STD_LOGIC_VECTOR (1 downto 0);
+           au_action_sel : out STD_LOGIC_VECTOR (3 downto 0);
            flags : in STD_LOGIC_VECTOR (2 downto 0);
            jmp_en : out STD_LOGIC;
            jmp_addr : out STD_LOGIC_VECTOR (2 downto 0));
@@ -72,28 +72,28 @@ begin
     immed_val <= "00000000";
     au_reg1_sel <= "000";
     au_reg2_sel <= "000";
-    au_action_sel <= "00";
+    au_action_sel <= "0000";
     jmp_en <= '0';
     jmp_addr <= "000";
     load_sel <= '0';
     
     if (ins_bus(15 downto 12) = "0000") then
-        au_action_sel <= "00";
+        au_action_sel <= "0000";
         au_reg1_sel <= ins_bus(10 downto 8);
         au_reg2_sel <= ins_bus(2 downto 0);
         
     elsif (ins_bus(15 downto 12) = "0001") then
-        au_action_sel <= "01";
+        au_action_sel <= "0001";
         au_reg1_sel <= ins_bus(10 downto 8);
         au_reg2_sel <= ins_bus(2 downto 0);
         
      elsif (ins_bus(15 downto 12) = "0010") then  
-       au_action_sel <= "10";
+       au_action_sel <= "0010";
        au_reg1_sel <= ins_bus(10 downto 8);
        au_reg2_sel <= ins_bus(2 downto 0);
            
     elsif (ins_bus(15 downto 12) = "0011") then  
-        au_action_sel <= "10";
+        au_action_sel <= "0010";
         au_reg1_sel <= ins_bus(10 downto 8);
         au_reg2_sel <= ins_bus(2 downto 0);
         

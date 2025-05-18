@@ -54,7 +54,7 @@ end component ;
 component AU
 Port ( data_a : in STD_LOGIC_VECTOR (7 downto 0);
        data_b : in STD_LOGIC_VECTOR (7 downto 0);
-       action : in STD_LOGIC_VECTOR (1 downto 0);
+       action : in STD_LOGIC_VECTOR (3 downto 0);
        result : out STD_LOGIC_VECTOR (7 downto 0);
        flags : out STD_LOGIC_VECTOR (2 downto 0));
 end component ;
@@ -104,7 +104,7 @@ Port (
     immed_val : out STD_LOGIC_VECTOR (7 downto 0);
     au_reg1_sel : out STD_LOGIC_VECTOR (2 downto 0);
     au_reg2_sel : out STD_LOGIC_VECTOR (2 downto 0);
-    au_action_sel : out STD_LOGIC_VECTOR (1 downto 0);
+    au_action_sel : out STD_LOGIC_VECTOR (3 downto 0);
     flags : in STD_LOGIC_VECTOR (2 downto 0);
     jmp_en : out STD_LOGIC;
     jmp_addr : out STD_LOGIC_VECTOR (2 downto 0));
@@ -143,7 +143,7 @@ signal load_sel : std_logic;
 signal au_reg_1_sel, au_reg_2_sel, reg_sel, flags_au : std_logic_vector (2 downto 0);
 signal reg_bank_data : std_logic_vector (63 downto 0);
 
-signal au_action_sel : std_logic_vector (1 downto 0);
+signal au_action_sel : std_logic_vector (3 downto 0);
 
 signal pc_jmp_addr, pc_inc_by1_addr : STD_LOGIC_VECTOR (2 downto 0);
 signal enable_jmp : std_logic;
