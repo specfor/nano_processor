@@ -39,13 +39,17 @@ architecture Behavioral of TB_nano_processor is
 
 component nano_processor
  Port ( clk : in STD_LOGIC;
-          reset : in STD_LOGIC;
-          flags : out STD_LOGIC_VECTOR (2 downto 0);
-          reg7_out : out STD_LOGIC_VECTOR (7 downto 0);
-          s_clk_led : out STD_LOGIC;
-         bus_data : out STD_LOGIC_VECTOR (63 downto 0);
-         pg_counter: out STD_LOGIC_VECTOR (2 downto 0);
-         reg_select:  out STD_LOGIC_VECTOR (2 downto 0));
+           reset : in STD_LOGIC;
+           flags : out STD_LOGIC_VECTOR (2 downto 0);
+           reg7_out : out STD_LOGIC_VECTOR (7 downto 0);
+           s_clk_led : out STD_LOGIC;
+           seg7_anodes : out std_logic_vector (3 downto 0);
+           seg7_cathodes : out std_logic_vector (6 downto 0);
+           
+           bus_data : out STD_LOGIC_VECTOR (63 downto 0);
+           pg_counter: out STD_LOGIC_VECTOR (2 downto 0);
+           reg_select:  out STD_LOGIC_VECTOR (2 downto 0)
+   );
 end component ;
 
 signal clk : std_logic := '1';
@@ -54,6 +58,8 @@ signal s_clk_led : std_logic;
 signal flags, pg_counter, reg_select : std_logic_vector (2 downto 0);
 signal reg7 :  std_logic_vector (7 downto 0);
 signal bus_d :  std_logic_vector (63 downto 0);
+signal seg7_anodes : std_logic_vector (3 downto 0);
+signal seg7_cathodes : std_logic_vector (6 downto 0);
 
 begin
 
@@ -64,6 +70,9 @@ port map (
     reset => reset,
     reg7_out => reg7,
     s_clk_led => s_clk_led,
+    seg7_anodes => seg7_anodes,
+    seg7_cathodes => seg7_cathodes,
+    
     bus_data => bus_d,
     pg_counter => pg_counter,
     reg_select => reg_select

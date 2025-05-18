@@ -37,9 +37,12 @@ entity nano_processor is
            flags : out STD_LOGIC_VECTOR (2 downto 0);
            reg7_out : out STD_LOGIC_VECTOR (7 downto 0);
            s_clk_led : out STD_LOGIC;
-           bus_data : out STD_LOGIC_VECTOR (63 downto 0);
-           pg_counter: out STD_LOGIC_VECTOR (2 downto 0);
-           reg_select:  out STD_LOGIC_VECTOR (2 downto 0)
+           seg7_anodes : out std_logic_vector (3 downto 0);
+           seg7_cathodes : out std_logic_vector (6 downto 0)
+           
+--           bus_data : out STD_LOGIC_VECTOR (63 downto 0);
+--           pg_counter: out STD_LOGIC_VECTOR (2 downto 0);
+--           reg_select:  out STD_LOGIC_VECTOR (2 downto 0)
    );
 end nano_processor;
 
@@ -132,6 +135,11 @@ Port ( clk : in STD_LOGIC;
        mem_select : out STD_LOGIC_VECTOR (2 downto 0));
 end component ;
 
+component Seg7_LUT 
+    Port ( address : in STD_LOGIC_VECTOR (3 downto 0);
+           data : out STD_LOGIC_VECTOR (6 downto 0));
+end component;
+
 
 
 signal s_clock : std_logic := '0';
@@ -147,6 +155,8 @@ signal au_action_sel : std_logic_vector (3 downto 0);
 
 signal pc_jmp_addr, pc_inc_by1_addr : STD_LOGIC_VECTOR (2 downto 0);
 signal enable_jmp : std_logic;
+
+signal seg7_lut_addr : std_logic_vector (3 downto 0);
 
 
 begin
@@ -258,13 +268,31 @@ port map(
     flags => flags_au
 );
 
+seg7_module : Seg7_LUT
+port map(
+    address => seg7_lut_addr,
+    data => seg7_cathodes
+);
+
+
 reg7_out <= reg_bank_data(63 downto 56);
 s_clk_led <= s_clock;
 flags <= flags_au;
 
-bus_data <= reg_bank_data;
-pg_counter <= prog_counter;
-reg_select <= reg_sel;
+
+--bus_data <= reg_bank_data;
+--pg_counter <= prog_counter;
+--reg_select <= reg_sel;
+
+seg7_process : process(clk)
+begin
+    seg7_anodes <= "1110";
+    seg7_lut_addr <= reg_bank_data(59 downto 56);
+    
+    seg7_anodes <= "1101";
+    seg7_lut_addr <= reg_bank_data(63 downto 60);
+    
+end process;
 
 
 end Behavioral;

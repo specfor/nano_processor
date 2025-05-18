@@ -45,7 +45,7 @@ Port ( clk : in STD_LOGIC;
            immed_val : out STD_LOGIC_VECTOR (7 downto 0);
            au_reg1_sel : out STD_LOGIC_VECTOR (2 downto 0);
            au_reg2_sel : out STD_LOGIC_VECTOR (2 downto 0);
-           au_action_sel : out STD_LOGIC_VECTOR (1 downto 0);
+           au_action_sel : out STD_LOGIC_VECTOR (3 downto 0);
            flags : in STD_LOGIC_VECTOR (2 downto 0);
            jmp_en : out STD_LOGIC;
            jmp_addr : out STD_LOGIC_VECTOR (2 downto 0));
@@ -54,7 +54,7 @@ end component ;
 signal clk, load_sel, jmp_en : std_logic;
 signal ins_bus : STD_LOGIC_VECTOR (15 downto 0);
 signal reg_en, au_reg1_sel, au_reg2_sel, flags, jmp_addr : STD_LOGIC_VECTOR (2 downto 0);
-signal au_action_sel : STD_LOGIC_VECTOR (1 downto 0);
+signal au_action_sel : STD_LOGIC_VECTOR (3 downto 0);
 signal immed_val : STD_LOGIC_VECTOR (7 downto 0);
 
 
@@ -77,23 +77,23 @@ port map(
 Clk_process : process
 begin
     Clk <= '0';
-    wait for 5 ns;
+    wait for 50 ns;
     Clk <= '1';
-    wait for 5 ns;
+    wait for 50 ns;
 end process;
 
 
 ins_dec_process : process begin
       
     flags <= "000";
-    ins_bus <= "0100001000000001";
+    ins_bus <= "0101000100000001";  --  MOVI R1, 1   
     
-    wait for 10ns;
+    wait for 100ns;
     
-    ins_bus <= "0100010000000101";
-    wait for 10ns;
+    ins_bus <= "0101001000000101";   -- MOVI R2, 5
+    wait for 100ns;
     
-    ins_bus <= "0000001100000001";
+    ins_bus <= "0001001100000001";  --  ADD R3, R1    
     wait;    
 end process;
 

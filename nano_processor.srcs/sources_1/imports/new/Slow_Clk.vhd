@@ -45,7 +45,7 @@ Clk_out <= Clk_status ;
 process (Clk_in) begin
     if (rising_edge(Clk_in)) then
         count <= count +1 ;
-        if (count = 5) then
+        if (count = 100000000) then
             Clk_status <= NOT (Clk_status);
             count <= 1;
         end if;

@@ -33,40 +33,16 @@ end ROM_16bit;
 architecture Behavioral of ROM_16bit is
     type ROM_Array is array (0 to 7) of STD_LOGIC_VECTOR(15 downto 0);
     
-    -- 16-bit instruction format:
-    -- [15:12] - Opcode (4 bits for 16 possible operations)
-    -- [11:8]  - Register A (destination)
-    -- [7:4]   - Register B (source)
-    -- [3:0]   - Immediate/Control bits
-    
-    -- Extended opcodes:
-    -- 0000 - ADD
-    -- 0001 - SUB
-    -- 0010 - MUL
-    -- 0011 - DIV
-    -- 0100 - MOVI (move immediate)
-    -- 0101 - MOV (register to register)
-    -- 0110 - JZR (jump if zero)
-    -- 0111 - JNZ (jump if not zero)
-    -- 1000 - SHL (shift left)
-    -- 1001 - SHR (shift right)
-    -- 1010 - AND
-    -- 1011 - OR
-    -- 1100 - XOR
-    -- 1101 - NOT
-    -- 1110 - ROL (rotate left)
-    -- 1111 - ROR (rotate right)
     
     signal ROM_Data : ROM_Array := (
-        -- Sample program: Calculate sum of numbers from 1 to 5 (1+2+3+4+5 = 15)
-        "0100001000000001",  --  0 MOVI R1, 1   
-        "0100010000000101",  --  1 MOVI R2, 5   
-        "0100011000000000",  --  2 MOVI R3, 0   
-        "0000001100000001",  --  3 ADD R3, R1    
-        "0111000100000010",  --  5 JNZ R1<=R2, 3 
-        "0100010000000000",  --  6 MOVI R4, 0   
-        "0001010000000011",  --  7 ADD R4, R3
-        "0000000000000000"
+        "0101000100000001",  --  0 MOVI R1, 1   
+        "0101001000000101",  --  1 MOVI R2, 5   
+        "0101001100001010",  --  2 MOVI R3, 10   
+        "0001001100000001",  --  3 ADD R3, R1    
+        "0101011100000111",  --  6 MOVI R7, 7   
+        "0001011100000010",  --  7 ADD R7, R2
+        "0000000000000000",
+        "0101011100011111"   -- mov R7, 31
     );
     
 begin
