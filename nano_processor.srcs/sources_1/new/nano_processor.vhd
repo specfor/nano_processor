@@ -38,11 +38,11 @@ entity nano_processor is
            reg7_out : out STD_LOGIC_VECTOR (7 downto 0);
            s_clk_led : out STD_LOGIC;
            seg7_anodes : out std_logic_vector (3 downto 0);
-           seg7_cathodes : out std_logic_vector (6 downto 0);
+           seg7_cathodes : out std_logic_vector (6 downto 0)
            
-           bus_data : out STD_LOGIC_VECTOR (63 downto 0);
-           pg_counter: out STD_LOGIC_VECTOR (2 downto 0);
-           reg_select:  out STD_LOGIC_VECTOR (2 downto 0)
+--           bus_data : out STD_LOGIC_VECTOR (63 downto 0);
+--           pg_counter: out STD_LOGIC_VECTOR (2 downto 0);
+--           reg_select:  out STD_LOGIC_VECTOR (2 downto 0)
    );
 end nano_processor;
 
@@ -283,9 +283,9 @@ s_clk_led <= s_clock;
 flags <= flags_au;
 
 
-bus_data <= reg_bank_data;
-pg_counter <= prog_counter;
-reg_select <= reg_sel;
+--bus_data <= reg_bank_data;
+--pg_counter <= prog_counter;
+--reg_select <= reg_sel;
 
 
 process(clk)
@@ -301,9 +301,9 @@ begin
     end if;
 end process;
 
-seg7_process : process(seg7_tick)
+seg7_process : process(clk)
 begin
-    if rising_edge(seg7_tick) then
+    if rising_edge(clk) then
         if seg7_tick = '1' then
             if seg7_digit_sel = '0' then
                 seg7_anodes <= "1110"; -- first digit
