@@ -28,49 +28,49 @@ begin
 
     stim_proc: process
     begin
-        -- Test Case 1: 0 + 0 = 0 (zero flag)
-        A <= "00000000";
+        -- index:230247T
+        A <= "11100000";
         B <= "00000000";
         M <= '0';
         wait for 100 ns;
         assert S = "00000000" and ZeroFlag = '1' and Overflow = '0'
             report "Test 1: 0+0 failed" severity error;
         
-        -- Test Case 2: 127 + 1 = -128 (signed overflow)
-        A <= "01111111";
+        
+        A <= "11110111";
         B <= "00000001";
         M <= '0';
         wait for 100 ns;
         assert S = "10000000" and Overflow = '1'
             report "Test 2: 127+1 overflow failed" severity error;
         
-        -- Test Case 3: -1 + 1 = 0 (zero flag)
-        A <= "11111111";
-        B <= "00000001";
+        
+        A <= "11110111";
+        B <= "11100000";
         M <= '0';
         wait for 100 ns;
         assert S = "00000000" and ZeroFlag = '1' and Overflow = '0'
             report "Test 3: -1+1 failed" severity error;
         
-        -- Test Case 4: 10 - 5 = 5 (basic subtraction)
-        A <= "00001010";
+        -- index 230346V
+        A <= "11100000";
         B <= "00000101";
         M <= '1';
         wait for 100 ns;
         assert S = "00000101" and ZeroFlag = '0' and Overflow = '0'
             report "Test 4: 10-5 failed" severity error;
         
-        -- Test Case 5: -128 - 1 = 127 (signed overflow)
-        A <= "10000000";
+        
+        A <= "11111010";
         B <= "00000001";
         M <= '1';
         wait for 100 ns;
         assert S = "01111111" and Overflow = '1'
             report "Test 5: -128-1 overflow failed" severity error;
         
-        -- Test Case 6: -5 - (-3) = -2 (signed subtraction)
-        A <= "11111011";
-        B <= "11111101";  -- -3
+        
+        A <= "11100000";
+        B <= "11111010";  -- -3
         M <= '1';
         wait for 100 ns;
         assert S = "11111110" and ZeroFlag = '0' and Overflow = '0'

@@ -10,6 +10,8 @@ entity Instruction_Decoder is
         immed_val : out STD_LOGIC_VECTOR (7 downto 0);
         au_reg1_sel : out STD_LOGIC_VECTOR (2 downto 0);
         au_reg2_sel : out STD_LOGIC_VECTOR (2 downto 0);
+        au_imm_data_sel : out std_logic ;
+        au_immed_val : out STD_LOGIC_VECTOR (7 downto 0);
         au_action_sel : out STD_LOGIC_VECTOR (3 downto 0);
         flags : in STD_LOGIC_VECTOR (2 downto 0);
         jmp_en : out STD_LOGIC;
@@ -70,6 +72,7 @@ begin
     au_reg1_sel <= (others => '0');
     au_reg2_sel <= (others => '0');
     au_action_sel <= (others => '0');
+    au_imm_data_sel <= '0';
     jmp_en <= '0';
     jmp_addr <= (others => '0');
     load_sel <= '0';
@@ -77,6 +80,8 @@ begin
 --    if rising_edge(clk) then
         -- Default values (prevent latches)
         
+        au_imm_data_sel <= ins_bus(11);
+        au_immed_val <= ins_bus(7 downto 0);    
 
         case ins_bus(15 downto 12) is
             when "0000" =>
@@ -156,7 +161,7 @@ begin
                     jmp_addr <= ins_bus(2 downto 0);
                 end if;
 
-            when "1101" =>  -- JZR (Jump if Register Zero)
+            when "1101" =>  -- JZ (Jump Zero)
                 if flags(0) = '1' then
                     jmp_en <= '1';
                     jmp_addr <= ins_bus(2 downto 0);

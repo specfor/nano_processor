@@ -39,10 +39,10 @@ entity nano_processor is
            s_clk_led : out STD_LOGIC;
            seg7_anodes : out std_logic_vector (3 downto 0);
            seg7_cathodes : out std_logic_vector (6 downto 0)
-           
---           bus_data : out STD_LOGIC_VECTOR (63 downto 0);
---           pg_counter: out STD_LOGIC_VECTOR (2 downto 0);
---           reg_select:  out STD_LOGIC_VECTOR (2 downto 0)
+           ;
+           bus_data : out STD_LOGIC_VECTOR (63 downto 0);
+           pg_counter: out STD_LOGIC_VECTOR (2 downto 0);
+           reg_select:  out STD_LOGIC_VECTOR (2 downto 0)
    );
 end nano_processor;
 
@@ -107,6 +107,8 @@ Port (
     immed_val : out STD_LOGIC_VECTOR (7 downto 0);
     au_reg1_sel : out STD_LOGIC_VECTOR (2 downto 0);
     au_reg2_sel : out STD_LOGIC_VECTOR (2 downto 0);
+    au_imm_data_sel : out std_logic ;
+    au_immed_val : out STD_LOGIC_VECTOR (7 downto 0);
     au_action_sel : out STD_LOGIC_VECTOR (3 downto 0);
     flags : in STD_LOGIC_VECTOR (2 downto 0);
     jmp_en : out STD_LOGIC;
@@ -146,8 +148,8 @@ signal s_clock : std_logic := '0';
 signal ins_bus : std_logic_vector (15 downto 0);
 signal prog_counter, next_prog_counter : std_logic_vector (2 downto 0);
 
-signal au_out, imm_value, reg_inp_data, au_inp1, au_inp2 : std_logic_vector (7 downto 0);
-signal load_sel : std_logic;
+signal au_out, imm_value, reg_inp_data, au_inp1, au_inp2, au_reg_bus2, au_immed_val : std_logic_vector (7 downto 0);
+signal load_sel, au_data2_sel : std_logic;
 signal au_reg_1_sel, au_reg_2_sel, reg_sel, flags_au : std_logic_vector (2 downto 0);
 signal reg_bank_data : std_logic_vector (63 downto 0);
 
@@ -213,6 +215,8 @@ port map (
     immed_val => imm_value,
     au_reg1_sel => au_reg_1_sel,
     au_reg2_sel => au_reg_2_sel,
+    au_imm_data_sel => au_data2_sel,
+    au_immed_val => au_immed_val,
     au_action_sel => au_action_sel,
     flags => flags_au,
     jmp_en => enable_jmp,
@@ -259,7 +263,15 @@ port map(
     a6 => reg_bank_data(55 downto 48),
     a7 => reg_bank_data(63 downto 56),
     sel => au_reg_2_sel,
-    mux_8_way_8_bit_out => au_inp2
+    mux_8_way_8_bit_out => au_reg_bus2
+);
+
+direct_data_au_mux : mux_2way_8bit
+port map(
+    a0 => au_reg_bus2,
+    a1 => au_immed_val,
+    sel => au_data2_sel,
+    data_out => au_inp2
 );
 
 au_module : AU
@@ -283,9 +295,9 @@ s_clk_led <= s_clock;
 flags <= flags_au;
 
 
---bus_data <= reg_bank_data;
---pg_counter <= prog_counter;
---reg_select <= reg_sel;
+bus_data <= reg_bank_data;
+pg_counter <= prog_counter;
+reg_select <= reg_sel;
 
 
 process(clk)
