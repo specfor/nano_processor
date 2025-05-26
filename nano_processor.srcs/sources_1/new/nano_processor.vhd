@@ -39,10 +39,10 @@ entity nano_processor is
            s_clk_led : out STD_LOGIC;
            seg7_anodes : out std_logic_vector (3 downto 0);
            seg7_cathodes : out std_logic_vector (6 downto 0)
-           ;
-           bus_data : out STD_LOGIC_VECTOR (63 downto 0);
-           pg_counter: out STD_LOGIC_VECTOR (2 downto 0);
-           reg_select:  out STD_LOGIC_VECTOR (2 downto 0)
+--           ;
+--           bus_data : out STD_LOGIC_VECTOR (63 downto 0);
+--           pg_counter: out STD_LOGIC_VECTOR (2 downto 0);
+--           reg_select:  out STD_LOGIC_VECTOR (2 downto 0)
    );
 end nano_processor;
 
@@ -295,9 +295,9 @@ s_clk_led <= s_clock;
 flags <= flags_au;
 
 
-bus_data <= reg_bank_data;
-pg_counter <= prog_counter;
-reg_select <= reg_sel;
+--bus_data <= reg_bank_data;
+--pg_counter <= prog_counter;
+--reg_select <= reg_sel;
 
 
 process(clk)
