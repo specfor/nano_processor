@@ -93,8 +93,17 @@ ins_dec_process : process begin
     ins_bus <= "0101001000000101";   -- MOVI R2, 5
     wait for 100ns;
     
-    ins_bus <= "0001001100000001";  --  ADD R3, R1    
-    wait;    
+    ins_bus <= "0001001100000001";  --  ADD R3, R1 
+    wait for 100ns;
+        
+    flags <= "000";
+    ins_bus <= "1100011000000101";  --  JZR R6, 5    
+    wait for 100ns;
+        
+    flags <= "001";
+    ins_bus <= "1100011000000101";  --  JZR R6, 5;    
+    wait;
+    
 end process;
 
 end Behavioral;

@@ -40,7 +40,7 @@ begin
 -- 1011     -   bitwise not     - 1011 M RRR 00000 RRR
 -- 1100     -   jzr             - 1100 0 RRR 00000 DDD      D - ADDRESS TO JUMP TO
 -- 1101     -   jz              - 1101 0 000 00000 DDD
-
+-- 1110     -   div             - 1110 0 RRR 00000 RRR
 
 -- 0000 0000 00000000
 
@@ -63,7 +63,7 @@ begin
 
 
 --process (clk)
-process (ins_bus)
+process (ins_bus, flags)
 begin
     reg_en <= "000";
     immed_val <= (others => '0');
