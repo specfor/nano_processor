@@ -27,8 +27,8 @@ begin
 
     stim_proc: process
     begin
-        -- Test AND (00)
-        A <= "11001100"; B <= "10101010"; Op <= "00"; wait for 100 ns;
+        -- 230247T
+        A <= "11100000"; B <= "11110111"; Op <= "00"; wait for 100 ns;
         assert Result = "10001000" report "AND failed" severity error;
         
         -- Test OR (01)

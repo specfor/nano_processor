@@ -32,20 +32,20 @@ begin
 
     stim_proc: process
     begin
-        -- Test 1: Left shift 11000011 by 2 bits
-        Data_In <= "11000011"; Shift_Amt <= "010"; Shift_Type <= '1'; wait for 100 ns;
+        -- Test 1: Left shift 11100000 by 2 bits inedex:230247T
+        Data_In <= "11100000"; Shift_Amt <= "010"; Shift_Type <= '1'; wait for 100 ns;
         assert Data_Out = "00001100" and Carry_Out = '1' report "Left shift failed" severity error;
         
         -- Test 2: Right shift 11000011 by 3 bits
         Shift_Type <= '0'; wait for 100 ns;
         assert Data_Out = "00011000" and Carry_Out = '0' report "Right shift failed" severity error;
         
-        -- Test 3: Left shift 00000001 by 7 bits (boundary case)
-        Data_In <= "00000001"; Shift_Amt <= "111"; Shift_Type <= '1'; wait for 100 ns;
+        -- Test 3: Left shift 11110111 by 7 bits (boundary case)
+        Data_In <= "11110111"; Shift_Amt <= "111"; Shift_Type <= '1'; wait for 100 ns;
         assert Data_Out = "10000000" and Carry_Out = '0' report "Max left shift failed" severity error;
         
-        -- Test 4: Right shift 10000001 by 1 bit
-        Data_In <= "10000001"; Shift_Amt <= "001"; Shift_Type <= '0'; wait for 100 ns;
+        -- Test 4: Right shift 10000001 by 1 bit index 230346V
+        Data_In <= "11111010"; Shift_Amt <= "001"; Shift_Type <= '0'; wait for 100 ns;
         assert Data_Out = "01000000" and Carry_Out = '1' report "Single right shift failed" severity error;
         
         -- Test 5: No shift (verify zero shift amount)

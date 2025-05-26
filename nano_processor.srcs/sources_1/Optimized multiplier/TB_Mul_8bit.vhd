@@ -23,8 +23,8 @@ begin
 
     stim_proc: process
     begin
-        A <= "00000011"; B <= "00000101"; wait for 100 ns; -- 3*5=15
-        A <= "00010000"; B <= "00010000"; wait for 100 ns; -- 16*16=256 (overflow)
+        A <= "11100000"; B <= "11110111"; wait for 100 ns; -- 230247T
+        A <= "11100000"; B <= "11111010"; wait for 100 ns; -- 230346V
         A <= "11111111"; B <= "00000001"; wait for 100 ns; -- 255*1=255
         wait;
     end process;
